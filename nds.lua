@@ -143,7 +143,7 @@ local watcolorpick = Misc:AddColorpicker({
 })
 
 local rainbcolorbut = Misc:AddToggle({
-    Name = "Rainbow Water Color",
+    Name = "Rainbow Water",
     Default = false,
     Flag = "watrainb"
 })
@@ -207,6 +207,17 @@ Teleports:AddButton({
     end
 })
 
+Teleports:AddBind({
+    Name = "Click TP",
+    Default = Enum.KeyCode.E,
+    Hold = false,
+    Callback = function()
+        if lp.Character and lp.Character.PrimaryPart then
+            lp.Character:PivotTo(CFrame.new(lp:GetMouse().Hit.X, (lp:GetMouse().Hit + Vector3.new(0,2.5,0)).Y, lp:GetMouse().Hit.Z))
+        end
+    end
+})
+
 Teleports:AddSection({ Name = "Game Teleports:" })
 
 if game.PlaceId ~= 189707 then
@@ -265,7 +276,7 @@ OrionLib:Init()
 curmap:Set(stat:FindFirstChild("Information").Value)
 coroutine.resume(coroutine.create(function()
     for _, v in next, game:GetService("Players"):GetPlayers() do
-        if v.Character and v.Character:WaitForChild("SurvivalTag", 1) then
+        if v.Character and v.Character:WaitForChild("SurvivalTag", .25) then
             curdis = v.Character:FindFirstChild("SurvivalTag").Value
             curdisp:Set(curdis)
         end
@@ -281,13 +292,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
         watcolorpick:Set(Color3.fromHSV(hue, 1, 1))
     elseif hue >= 1 then
         hue = 0
-    end
-end)
-game:GetService("UserInputService").InputBegan:Connect(function(key)
-    if key.KeyCode == Enum.KeyCode.LeftAlt then
-        local pos = lp:GetMouse().Hit + Vector3.new(0,2.5,0)
-        pos = CFrame.new(pos.X,pos.Y,pos.Z)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
     end
 end)
 lp.CharacterAdded:Connect(function(chr)
