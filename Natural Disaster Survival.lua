@@ -186,7 +186,7 @@ local rainbowspeed = Visuals:AddSlider({
     Name = "Rainbow Speed",
     Min = 0,
     Max = 50,
-    Default = 5,
+    Default = 7.5,
     Color = Color3.fromRGB(255,255,255),
     Increment = .125,
     Flag = "rainbowspeed"
@@ -439,6 +439,7 @@ Teleports:AddButton({
 
 Teleports:AddToggle({
     Name = "Keep GUI",
+    Default = keepgui or false,
     Callback = function(Value)
         if not queue_on_teleport and Value then
             notify("Error.", "Your exploit is unsupported. (Missing function: queue_on_teleport)", "rbxassetid://6962520787", 7.5)
@@ -530,7 +531,10 @@ lp.PlayerGui.ChildAdded:Connect(function(chld) --Hide Visuals
 end)
 lp.OnTeleport:Connect(function(state) --Keep GUI
     if queue_on_teleport and state == Enum.TeleportState.Started and OrionLib.Flags.keepgui.Value then
-        queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/73GG/Game-Scripts/main/Natural%20Disaster%20Survival.lua"))()]])
+        queue_on_teleport([[
+            keepgui = true
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/73GG/Game-Scripts/main/Natural%20Disaster%20Survival.lua"))()
+            ]])
     end
 end)
 struct.ChildAdded:Connect(function(chld) --Auto Apply Selected Water Color To Flood And Tsunami
