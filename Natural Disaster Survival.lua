@@ -534,6 +534,8 @@ end)
 lp.OnTeleport:Connect(function(state) --Keep GUI
     if queue_on_teleport and state == Enum.TeleportState.Started and OrionLib.Flags.keepgui.Value then
         queue_on_teleport([[
+            repeat task.wait()
+            until game:IsLoaded()
             keepgui = true
             loadstring(game:HttpGet("https://raw.githubusercontent.com/73GG/Game-Scripts/main/Natural%20Disaster%20Survival.lua"))()
             ]])
