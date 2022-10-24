@@ -136,9 +136,9 @@ Visuals:AddToggle({
 Visuals:AddToggle({
     Name = "Hide Pop-Ups",
     Callback = function(Value)
-        lp.PlayerGui.MainGui:FindFirstChild("SurviversPage").Visible = false
-        lp.PlayerGui.MainGui:FindFirstChild("NextMapPage").Visible = false
-        lp.PlayerGui.MainGui:FindFirstChild("Hint").Visible = not Value
+        lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("SurviversPage").Visible = false
+        lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("NextMapPage").Visible = false
+        lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("Hint").Visible = not Value
     end,
     Flag = "nopop"
 })
@@ -406,7 +406,7 @@ end
 Teleports:AddButton({
     Name = "Rejoin",
     Callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
         notify("Teleporting...", "Teleport in progress, please wait...", "rbxassetid://6962520787", 5)
     end
 })
@@ -427,7 +427,7 @@ Teleports:AddButton({
             end
             if #servers > 0 then
                 notify("Teleporting...", "Teleport in progress, please wait...", "rbxassetid://6962520787", 5)
-                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], game:GetService("Players").LocalPlayer)
+                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], lp)
             else
                 return notify("Error.", "Couldn't find a server, try again later.", "rbxassetid://6962520787", 7.5)
             end
@@ -482,7 +482,7 @@ game:GetService("RunService").RenderStepped:Connect(function() --Rainbow Water
         hue = .0
     end
 end)
-for _, v in pairs({lp.PlayerGui.MainGui:FindFirstChild("SurviversPage"), lp.PlayerGui.MainGui:FindFirstChild("NextMapPage")}) do
+for _, v in pairs({lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("SurviversPage"), lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("NextMapPage")}) do
     v:GetPropertyChangedSignal("Visible"):Connect(function() --Hide Pop-Ups
         if not v.Visible then
             return
@@ -498,7 +498,7 @@ end)
 coroutine.resume(coroutine.create(function()
     while task.wait(.1) do --Confetti Rain
         if OrionLib.Flags.confrain.Value then
-            local r = game:GetService("Players").LocalPlayer.PlayerGui.MainGui:FindFirstChild("ConfettiModule")
+            local r = lp.PlayerGui:WaitForChild("MainGui"):FindFirstChild("ConfettiModule")
             if r then
                 require(r).Rain(1)
             end
@@ -523,6 +523,8 @@ lp.CharacterAdded:Connect(function(chr) --No Fall
     if OrionLib.Flags.nofall.Value then
         chr:WaitForChild("FallDamageScript"):Destroy()
     end
+    ws:Set(16)
+    jp:Set(50)
 end)
 lp.PlayerGui.ChildAdded:Connect(function(chld) --Hide Visuals
     if OrionLib.Flags.hidevis.Value then
