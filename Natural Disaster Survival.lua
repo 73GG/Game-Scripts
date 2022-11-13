@@ -531,8 +531,8 @@ lp.PlayerGui.ChildAdded:Connect(function(chld) --Hide Visuals
         chld:FindFirstChildOfClass("Frame").Visible = not OrionLib.Flags.hidevis.Value
     end
 end)
-lp.OnTeleport:Connect(function(state) --Keep GUI
-    if queue_on_teleport and state == Enum.TeleportState.Started and OrionLib.Flags.keepgui.Value then
+lp.OnTeleport:Connect(function() --Keep GUI
+    if queue_on_teleport and OrionLib.Flags.keepgui.Value then
         queue_on_teleport([[
             repeat task.wait()
             until game:IsLoaded()
